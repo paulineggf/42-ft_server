@@ -19,13 +19,15 @@
 # Default server configuration
 #
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
+	#listen 80 default_server;
+	#listen [::]:80 default_server;
 
 	# SSL configuration
 	#
-	# listen 443 ssl default_server;
-	# listen [::]:443 ssl default_server;
+	listen 443 ssl default_server;
+	listen [::]:443 ssl default_server;
+	include snippets/self-signed.conf;
+	include snippets/ssl-params.conf;
 	#
 	# Note: You should disable gzip for SSL traffic.
 	# See: https://bugs.debian.org/773332
@@ -48,6 +50,7 @@ server {
 	location / {
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.
+		autoindex off;
 		try_files $uri $uri/ =404;
 	}
 
@@ -73,6 +76,13 @@ server {
 	#}
 }
 
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name localhost;
+	return 302 https://192.168.99.100:8083;
+}
 
 # Virtual Host configuration for example.com
 #
