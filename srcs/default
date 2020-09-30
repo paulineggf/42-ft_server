@@ -81,7 +81,7 @@ server {
 	listen [::]:80;
 
 	server_name localhost;
-	return 302 https://192.168.99.100:8083;
+	return 302 https://localhost:443;
 }
 
 # Virtual Host configuration for example.com
