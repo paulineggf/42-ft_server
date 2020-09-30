@@ -3,6 +3,7 @@ FROM debian:buster
 RUN	apt-get update -y \
 	&& apt-get install nginx -y
 
+
 COPY	srcs/default /etc/nginx/sites-enabled/
 
 RUN	apt-get -y install vim
@@ -16,7 +17,7 @@ RUN 	apt-get -y install php-fpm php-mysql \
 
 RUN	chown -R root:root /var/www/html/
 
-RUN	apt-get -y install wget
+RUN	apt-get -y install wget && apt-get -y install git
 
 RUN	wget https://wordpress.org/latest.tar.gz \
 	&& tar xpf latest.tar.gz \
@@ -55,6 +56,10 @@ RUN 	openssl req -x509 -subj "/C=FR/ST=IDF/L=Paris/O=SuperCompany/OU=NVM/CN=IamR
 COPY	srcs/self-signed.conf /etc/nginx/snippets/ 
 
 COPY	srcs/ssl-params.conf /etc/nginx/snippets/
+
+RUN apt-get install netcat-openbsd
+
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)"
 
 RUN	apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
